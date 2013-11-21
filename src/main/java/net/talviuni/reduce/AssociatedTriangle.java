@@ -19,6 +19,10 @@ public class AssociatedTriangle {
         return area;
     }
     
+    public Point getCurrentPoint() {
+    	return current;
+    }
+    
     private double calculateArea() {
         return Math.abs(
                 (previous.getX() - next.getX()) * (current.getY() - previous.getY())

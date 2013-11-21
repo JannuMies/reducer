@@ -17,7 +17,7 @@ public class AssociatedTriangleTest {
 
         Assert.assertEquals(2, triangle.getArea(), 0.00005);
     }
-    
+
     @Test
     public void testNonrightAngleTrianleWithOffset() {
         TestPoint first = new TestPoint(-1, -1);
@@ -36,22 +36,4 @@ public class AssociatedTriangleTest {
         return new AssociatedTriangle(pointList, 1);
     }
 
-    private class TestPoint implements Point {
-
-        private Double x;
-        private Double y;
-
-        public TestPoint(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public Double getX() {
-            return x;
-        }
-
-        public Double getY() {
-            return y;
-        }
-    }
 }
