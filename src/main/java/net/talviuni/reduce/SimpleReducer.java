@@ -1,6 +1,5 @@
 package net.talviuni.reduce;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,14 +9,17 @@ import java.util.List;
  */
 public class SimpleReducer implements Reducer {
 
-	public List<Point> reduceBelowThreshold(List<Point> pointList, int threshold) {
-		if (pointList.size() <= threshold) {
+	public List<Point> reduceBelowThreshold(List<Point> pointList, int size) throws InvalidReductionSizeException {
+		if(size < 2) {
+			throw new InvalidReductionSizeException("Can not reduce a sequence to less than 2 points.");
+		}
+		if (pointList.size() <= size) {
 			return pointList;
 		}
 
 		LinkedList<Point> listToReduce = new LinkedList<Point>(pointList);
 
-		while (listToReduce.size() > threshold) {
+		while (listToReduce.size() > size) {
 			removeSmallestArea(listToReduce);
 		}
 

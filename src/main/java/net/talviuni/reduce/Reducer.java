@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface Reducer {
     /**
-     * Reduce a list of 2D points below a certain threshold.
+     * Reduce a sequence of 2D points below a certain size.
      * 
      * @param pointList
-     * @param threshold
+     * @param size
      * @return
      */
-    public List<Point> reduceBelowThreshold(List<Point> pointList, int threshold);
+    public List<Point> reduceBelowThreshold(List<Point> pointList, int size) throws InvalidReductionSizeException;
 }
