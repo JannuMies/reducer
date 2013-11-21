@@ -17,4 +17,8 @@ public class TestPoint implements Point {
     public Double getY() {
         return y;
     }
+    @Override
+    public String toString() {
+    	return "X " + x + " - Y " + y;
+    }
 }
