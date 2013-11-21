@@ -10,11 +10,11 @@ public class TestPoint implements Point {
         this.y = y;
     }
 
-    public Double getX() {
+    public double getX() {
         return x;
     }
 
-    public Double getY() {
+    public double getY() {
         return y;
     }
     @Override
