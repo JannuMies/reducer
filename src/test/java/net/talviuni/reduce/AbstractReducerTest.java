@@ -1,27 +1,32 @@
 package net.talviuni.reduce;
 
+import static junit.framework.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import junit.framework.Assert;
-import static junit.framework.Assert.*;
+import net.talviuni.reduce.EliminatedTestPoint;
+import net.talviuni.reduce.Point;
+import net.talviuni.reduce.TestPoint;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class SimpleReducerTest {
+public abstract class AbstractReducerTest {
 
-	private SimpleReducer reducer;
+	private Reducer reducer;
 
 	@Before
 	public void setup() {
-		reducer = new SimpleReducer();
+		reducer = getReducer();
 	}
 
+	public abstract Reducer getReducer();
+	
 	@Test
 	public void ensureReducingReturnsNonNullValue() throws Exception {
-		Reducer reducer = new SimpleReducer();
 		List<Point> reducedList = reducer.reduceBelowThreshold(
 				new ArrayList<Point>(), 666);
 
@@ -29,8 +34,7 @@ public class SimpleReducerTest {
 	}
 
 	@Test
-	public void ensureReducingFivePointRouteByOneRemovesSmallestTriangle()
-			throws Exception {
+	public void ensureSmallestTriangleIsRemoved() throws Exception {
 		ArrayList<Point> pointList = new ArrayList<Point>();
 		pointList.add(new TestPoint(1, 0));
 		pointList.add(new TestPoint(2, 2));
@@ -45,7 +49,7 @@ public class SimpleReducerTest {
 	}
 
 	@Test
-	public void ensureReducingSixPointRouteByTwoRemovesSmallestNeighbouringTriangles()
+	public void ensureSmallestNeighbouringTrianglesAreRemoved()
 			throws Exception {
 		ArrayList<Point> pointList = new ArrayList<Point>();
 		pointList.add(new TestPoint(0, 0));
@@ -62,7 +66,7 @@ public class SimpleReducerTest {
 	}
 
 	@Test
-	public void ensureReducingFivePointRouteByTwoRemovesSmallestNonNeighbouringTriangles()
+	public void ensureRemovingSmallesNonNeighbouringTrianglesAreRemoved()
 			throws Exception {
 		ArrayList<Point> pointList = new ArrayList<Point>();
 		pointList.add(new TestPoint(1, 0));
@@ -86,12 +90,5 @@ public class SimpleReducerTest {
 			}
 		}
 		return list;
-	}
-
-	private class EliminatedTestPoint extends TestPoint {
-
-		public EliminatedTestPoint(double x, double y) {
-			super(x, y);
-		}
 	}
 }

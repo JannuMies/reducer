@@ -1,7 +1,12 @@
-package net.talviuni.reduce;
+package net.talviuni.reduce.simple;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+
+import net.talviuni.reduce.InvalidReductionSizeException;
+import net.talviuni.reduce.Point;
+import net.talviuni.reduce.Reducer;
+import net.talviuni.reduce.TriangleAreaCalculator;
 
 /**
  * Not a proper implementation of Visvalingam-Whyatt, just something to get the
@@ -17,7 +22,7 @@ public class SimpleReducer implements Reducer {
 			return pointList;
 		}
 
-		LinkedList<Point> listToReduce = new LinkedList<Point>(pointList);
+		ArrayList<Point> listToReduce = new ArrayList<Point>(pointList);
 
 		while (listToReduce.size() > size) {
 			removeSmallestArea(listToReduce);
@@ -26,7 +31,7 @@ public class SimpleReducer implements Reducer {
 		return listToReduce;
 	}
 
-	private void removeSmallestArea(LinkedList<Point> triangleList) {
+	private void removeSmallestArea(ArrayList<Point> triangleList) {
 		int indexOfSmallest = 0;
 		double smallestArea = Double.MAX_VALUE;
 
