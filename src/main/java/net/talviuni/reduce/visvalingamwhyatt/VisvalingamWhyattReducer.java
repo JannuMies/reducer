@@ -8,7 +8,7 @@ import net.talviuni.reduce.Reducer;
 
 public class VisvalingamWhyattReducer implements Reducer {
 
-	public List<Point> reduceBelowThreshold(List<Point> pointList, int size)
+	public <T extends Point> List<T> reduceBelowThreshold(List<T> pointList, int size)
 			throws InvalidReductionSizeException {
 		if(size < 2) {
 			throw new InvalidReductionSizeException("Can not reduce a sequence to less than 2 points.");
@@ -17,7 +17,7 @@ public class VisvalingamWhyattReducer implements Reducer {
 			return pointList;
 		}
 		
-		VisvalingamWhyattContainer container = new VisvalingamWhyattContainer(pointList);
+		VisvalingamWhyattContainer<T> container = new VisvalingamWhyattContainer<T>(pointList);
 		return container.filterToSize(size);
 	}
 

@@ -3,33 +3,33 @@ package net.talviuni.reduce.visvalingamwhyatt;
 import net.talviuni.reduce.Point;
 import net.talviuni.reduce.TriangleAreaCalculator;
 
-public class Triangle {
+public class Triangle<T extends Point> {
 
-	private Point last;
-	private final Point current;
-	private Point next;
+	private T last;
+	private final T current;
+	private T next;
 	private double area;
 
-	public Triangle(Point last, Point current, Point next) {
+	public Triangle(T last, T current, T next) {
 		this.last = last;
 		this.current = current;
 		this.next = next;
 		updateArea();
 	}
 
-	public Point getLast() {
+	public T getLast() {
 		return last;
 	}
 
-	public void setLast(Point last) {
+	public void setLast(T last) {
 		this.last = last;
 	}
 
-	public Point getNext() {
+	public T getNext() {
 		return next;
 	}
 
-	public void setNext(Point next) {
+	public void setNext(T next) {
 		this.next = next;
 	}
 
@@ -41,7 +41,7 @@ public class Triangle {
 		area = TriangleAreaCalculator.calculateArea(last, getCurrent(), next);
 	}
 
-	public Point getCurrent() {
+	public T getCurrent() {
 		return current;
 	}
 }

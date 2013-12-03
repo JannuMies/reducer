@@ -2,11 +2,11 @@ package net.talviuni.reduce.visvalingamwhyatt;
 
 import net.talviuni.reduce.Point;
 
-public class RemovedPoint {
+public class RemovedPoint<T extends Point> {
 	private final double area;
-	private final Point point;
+	private final T point;
 
-	public RemovedPoint(Point point, double area) {
+	public RemovedPoint(T point, double area) {
 		this.point = point;
 		this.area = area;
 	}
@@ -15,7 +15,7 @@ public class RemovedPoint {
 		return area;
 	}
 
-	public Point getPoint() {
+	public T getPoint() {
 		return point;
 	}
 }

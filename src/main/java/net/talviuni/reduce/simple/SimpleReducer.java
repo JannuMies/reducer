@@ -14,7 +14,7 @@ import net.talviuni.reduce.TriangleAreaCalculator;
  */
 public class SimpleReducer implements Reducer {
 
-	public List<Point> reduceBelowThreshold(List<Point> pointList, int size) throws InvalidReductionSizeException {
+	public <T extends Point> List<T> reduceBelowThreshold(List<T> pointList, int size) throws InvalidReductionSizeException {
 		if(size < 2) {
 			throw new InvalidReductionSizeException("Can not reduce a sequence to less than 2 points.");
 		}
@@ -22,7 +22,7 @@ public class SimpleReducer implements Reducer {
 			return pointList;
 		}
 
-		ArrayList<Point> listToReduce = new ArrayList<Point>(pointList);
+		ArrayList<T> listToReduce = new ArrayList<T>(pointList);
 
 		while (listToReduce.size() > size) {
 			removeSmallestArea(listToReduce);
@@ -31,7 +31,7 @@ public class SimpleReducer implements Reducer {
 		return listToReduce;
 	}
 
-	private void removeSmallestArea(ArrayList<Point> triangleList) {
+	private <T extends Point> void removeSmallestArea(ArrayList<T> triangleList) {
 		int indexOfSmallest = 0;
 		double smallestArea = Double.MAX_VALUE;
 
