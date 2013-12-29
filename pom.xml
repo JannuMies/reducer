@@ -4,7 +4,7 @@
 
   <groupId>net.talviuni</groupId>
   <artifactId>reducer</artifactId>
-  <version>0.8.8-RC1</version>
+  <version>0.8.8-RC2</version>
   <packaging>jar</packaging>
 
   <name>reducer</name>
@@ -21,4 +21,13 @@
       <version>4.9</version>
     </dependency>
   </dependencies>
+
+
+  <licenses>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+    </license>
+  </licenses>
+
 </project>
