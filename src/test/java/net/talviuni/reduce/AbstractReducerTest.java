@@ -4,6 +4,7 @@ import static junit.framework.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -75,6 +76,32 @@ public abstract class AbstractReducerTest {
         Assert.assertTrue(reducedList.containsAll(clearListOfEliminatedPoints(pointList)));
     }
 
+    @Test
+    public void testReductionTimeOfTenThousandPoints() throws Exception {
+        List<TestPoint> listToReduce = new LinkedList<TestPoint>();
+        int tenThousand = 10000;
+        for (int i = 0; i < tenThousand; i++) {
+            listToReduce.add(new TestPoint(Math.sin(i), 0.002 * i));
+        }
+        long startTime = System.currentTimeMillis();
+        reducer.reduceBelowThreshold(listToReduce, 2);
+        System.out.println(String.format("Time to reduce %s points to two was %s milliseconds.",
+                tenThousand, System.currentTimeMillis() - startTime));
+    }
+
+    @Test
+    public void testReductionTimeOfTwentyThousandPoints() throws Exception {
+        List<TestPoint> listToReduce = new LinkedList<TestPoint>();
+        int twentyThousand = 20000;
+        for (int i = 0; i < twentyThousand; i++) {
+            listToReduce.add(new TestPoint(Math.sin(i), 0.002 * i));
+        }
+        long startTime = System.currentTimeMillis();
+        reducer.reduceBelowThreshold(listToReduce, 2);
+        System.out.println(String.format("Time to reduce %s points to two was %s milliseconds.",
+                twentyThousand, System.currentTimeMillis() - startTime));
+    }
+    
     private Collection<Point> clearListOfEliminatedPoints(ArrayList<Point> pointList) {
         ArrayList<Point> list = new ArrayList<Point>();
         for (Point point : pointList) {
