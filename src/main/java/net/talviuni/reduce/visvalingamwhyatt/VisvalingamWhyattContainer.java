@@ -33,7 +33,7 @@ public class VisvalingamWhyattContainer<T extends Point> {
         if (size >= originalPointList.size()) {
             return originalPointList;
         }
-        List<T> listToBeFiltered = new ArrayList<T>(originalPointList);
+        List<T> listToBeFiltered = new LinkedList<T>(originalPointList);
         List<T> pointsToRemove = getPointsToRemove(size);
         listToBeFiltered.removeAll(pointsToRemove);
         return listToBeFiltered;
