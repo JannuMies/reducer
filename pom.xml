@@ -4,11 +4,10 @@
 
   <groupId>net.talviuni</groupId>
   <artifactId>reducer</artifactId>
-  <version>0.8.8-RC2</version>
+  <version>0.8.9-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>reducer</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
