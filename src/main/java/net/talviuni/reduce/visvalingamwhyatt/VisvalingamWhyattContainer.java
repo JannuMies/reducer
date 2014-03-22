@@ -13,126 +13,127 @@ import net.talviuni.reduce.Point;
 
 public class VisvalingamWhyattContainer<T extends Point> {
 
-	private List<T> originalPointList;
-	private LinkedList<RemovedPoint<T>> removedList;
+    private List<T> originalPointList;
+    private LinkedList<RemovedPoint<T>> removedList;
 
-	public VisvalingamWhyattContainer(List<T> pointList)
-			throws InvalidReductionSizeException {
-		if (pointList.size() < 2) {
-			throw new InvalidReductionSizeException(
-					"The given list contains less than two points.");
-		}
-		this.originalPointList = pointList;
-		removedList = new LinkedList<RemovedPoint<T>>();
-		doTheMagic(pointList);
-	}
+    public VisvalingamWhyattContainer(List<T> pointList) throws InvalidReductionSizeException {
+        if (pointList.size() < 2) {
+            throw new InvalidReductionSizeException("The given list contains less than two points.");
+        }
+        this.originalPointList = pointList;
+        removedList = new LinkedList<RemovedPoint<T>>();
+        doTheMagic(pointList);
+    }
 
-	public List<T> filterToSize(int size)
-			throws InvalidReductionSizeException {
-		if (size < 2) {
-			throw new InvalidReductionSizeException(
-					"Can not reduce a list to less than two points.");
-		}
-		if (size >= originalPointList.size()) {
-			return originalPointList;
-		}
-		List<T> listToBeFiltered = new ArrayList<T>(originalPointList);
-		List<T> pointsToRemove = getPointsToRemove(size);
-		listToBeFiltered.removeAll(pointsToRemove);
-		return listToBeFiltered;
-	}
+    public List<T> filterToSize(int size) throws InvalidReductionSizeException {
+        if (size < 2) {
+            throw new InvalidReductionSizeException(
+                    "Can not reduce a list to less than two points.");
+        }
+        if (size >= originalPointList.size()) {
+            return originalPointList;
+        }
+        List<T> listToBeFiltered = new ArrayList<T>(originalPointList);
+        List<T> pointsToRemove = getPointsToRemove(size);
+        listToBeFiltered.removeAll(pointsToRemove);
+        return listToBeFiltered;
+    }
 
-	private List<T> getPointsToRemove(int size) {
-		ArrayList<T> removalList = new ArrayList<T>();
-		int itemsRemovalCount = originalPointList.size() - size;
-		Iterator<RemovedPoint<T>> iterator = removedList.iterator();
-		while (removalList.size() < itemsRemovalCount) {
-			removalList.add(iterator.next().getPoint());
-		}
-		return removalList;
-	}
+    private List<T> getPointsToRemove(int size) {
+        List<T> removalList = new ArrayList<T>();
+        int itemsRemovalCount = originalPointList.size() - size;
+        Iterator<RemovedPoint<T>> iterator = removedList.iterator();
+        while (removalList.size() < itemsRemovalCount) {
+            removalList.add(iterator.next().getPoint());
+        }
+        return removalList;
+    }
 
-	private void doTheMagic(List<T> pointList) {
-		Map<T, Triangle<T>> pointToTriangleMap = buildTriangleMap(pointList);
-		while ((removedList.size() + 2) < pointList.size()) {
-			Triangle<T> smallestTriangle = getSmallestTriangle(pointToTriangleMap);
-			double removedArea = getLargerOfLatestRemovedAndCurrentTriangle(smallestTriangle);
-			updateNeighbouringTriangles(smallestTriangle, pointToTriangleMap);
-			T currentPoint = smallestTriangle.getCurrent();
-			removedList.add(new RemovedPoint<T>(currentPoint, removedArea));
-			pointToTriangleMap.remove(currentPoint);
-		}
-		Collections.sort(removedList, new RemovedPointComparator());
-	}
+    private void doTheMagic(List<T> pointList) {
+        Map<T, Triangle<T>> pointToTriangleMap = buildTriangleMap(pointList);
+        // +2 so that the loop stops before end points are removed.
+        while ((removedList.size() + 2) < pointList.size()) {
+            Triangle<T> smallestTriangle = getTriangleWithSmallestArea(pointToTriangleMap);
+            double removedArea = getLargerOfLatestRemovedAndCurrentTriangle(smallestTriangle);
+            updateNeighbouringTriangles(smallestTriangle, pointToTriangleMap);
+            T currentPoint = smallestTriangle.getCurrent();
+            removedList.add(new RemovedPoint<T>(currentPoint, removedArea));
+            pointToTriangleMap.remove(currentPoint);
+        }
+        Collections.sort(removedList, new RemovedPointComparator());
+    }
 
-	private void updateNeighbouringTriangles(Triangle<T> smallestTriangle,
-			Map<T, Triangle<T>> pointToTriangleMap) {
-		Triangle<T> last = pointToTriangleMap.get(smallestTriangle.getLast());
-		Triangle<T> next = pointToTriangleMap.get(smallestTriangle.getNext());
+    private void updateNeighbouringTriangles(Triangle<T> smallestTriangle,
+            Map<T, Triangle<T>> pointToTriangleMap) {
+        Triangle<T> last = pointToTriangleMap.get(smallestTriangle.getLast());
+        Triangle<T> next = pointToTriangleMap.get(smallestTriangle.getNext());
 
-		updateNextTriangle(last, smallestTriangle, next);
-		updateLastTriangle(last, smallestTriangle, next);
-	}
+        updateNextTriangle(last, smallestTriangle, next);
+        updateLastTriangle(last, smallestTriangle, next);
+    }
 
-	private void updateLastTriangle(Triangle<T> last, Triangle<T> current,
-			Triangle<T> next) {
-		if (null == last) {
-			return;
-		}
-		if (null == next) {
-			last.setNext(current.getNext());
-		} else {
-			last.setNext(next.getCurrent());
-		}
-		last.updateArea();
-	}
+    private void updateLastTriangle(Triangle<T> last, Triangle<T> current, Triangle<T> next) {
+        if (null == last) {
+            return;
+        }
+        if (null == next) {
+            last.setNext(current.getNext());
+        } else {
+            last.setNext(next.getCurrent());
+        }
+        last.updateArea();
+    }
 
-	private void updateNextTriangle(Triangle<T> last, Triangle<T> current,
-			Triangle<T> next) {
-		if (null == next) {
-			return;
-		}
-		if (null == last) {
-			next.setLast(current.getLast());
-		} else {
-			next.setLast(last.getCurrent());
-		}
-		next.updateArea();
-	}
+    private void updateNextTriangle(Triangle<T> last, Triangle<T> current, Triangle<T> next) {
+        if (null == next) {
+            return;
+        }
+        if (null == last) {
+            next.setLast(current.getLast());
+        } else {
+            next.setLast(last.getCurrent());
+        }
+        next.updateArea();
+    }
 
-	private double getLargerOfLatestRemovedAndCurrentTriangle(
-			Triangle<T> smallestTriangle) {
-		if (removedList.isEmpty()) {
-			return smallestTriangle.getArea();
-		}
-		double lastRemovedArea = removedList.getLast().getArea();
-		if (lastRemovedArea < smallestTriangle.getArea()) {
-			return smallestTriangle.getArea();
-		} else {
-			return lastRemovedArea;
-		}
-	}
+    private double getLargerOfLatestRemovedAndCurrentTriangle(Triangle<T> smallestTriangle) {
+        if (removedList.isEmpty()) {
+            return smallestTriangle.getArea();
+        }
+        double lastRemovedArea = removedList.getLast().getArea();
+        if (lastRemovedArea < smallestTriangle.getArea()) {
+            return smallestTriangle.getArea();
+        } else {
+            return lastRemovedArea;
+        }
+    }
 
-	private Triangle<T> getSmallestTriangle(Map<T, Triangle<T>> pointToTriangleMap) {
-		double smallestArea = Double.MAX_VALUE;
-		Triangle<T> smallestTriangle = null;
-		for (Triangle<T> triangle : pointToTriangleMap.values()) {
-			if (triangle.getArea() < smallestArea) {
-				smallestArea = triangle.getArea();
-				smallestTriangle = triangle;
-			}
-		}
-		return smallestTriangle;
-	}
+    private Triangle<T> getTriangleWithSmallestArea(Map<T, Triangle<T>> pointToTriangleMap) {
+        double smallestArea = Double.MAX_VALUE;
+        Triangle<T> smallestTriangle = null;
+        for (Triangle<T> triangle : pointToTriangleMap.values()) {
+            if (triangle.getArea() < smallestArea) {
+                smallestArea = triangle.getArea();
+                smallestTriangle = triangle;
+            }
+        }
+        return smallestTriangle;
+    }
 
-	private Map<T, Triangle<T>> buildTriangleMap(List<T> pointList) {
-		HashMap<T, Triangle<T>> map = new HashMap<T, Triangle<T>>(
-				pointList.size());
-		for (int i = 1; i < pointList.size() - 1; i++) {
-			Triangle<T> triangle = new Triangle<T>(pointList.get(i - 1),
-					pointList.get(i), pointList.get(i + 1));
-			map.put(pointList.get(i), triangle);
-		}
-		return map;
-	}
+    /**
+     * Build {@link Triangle}s from neighbouring {@link Point}s and map them
+     * according to their middle point.
+     * 
+     * @param pointList
+     * @return
+     */
+    private Map<T, Triangle<T>> buildTriangleMap(List<T> pointList) {
+        HashMap<T, Triangle<T>> map = new HashMap<T, Triangle<T>>(pointList.size());
+        for (int i = 1; i < pointList.size() - 1; i++) {
+            Triangle<T> triangle = new Triangle<T>(pointList.get(i - 1), pointList.get(i),
+                    pointList.get(i + 1));
+            map.put(pointList.get(i), triangle);
+        }
+        return map;
+    }
 }

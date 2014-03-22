@@ -5,8 +5,8 @@ import net.talviuni.reduce.Reducer;
 
 public class SimpleReducerTest extends AbstractReducerTest {
 
-	@Override
-	public Reducer getReducer() {
-		return new SimpleReducer();
-	}
+    @Override
+    public Reducer getReducer() {
+        return new SimpleReducer();
+    }
 }

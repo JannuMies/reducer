@@ -5,8 +5,8 @@ import net.talviuni.reduce.Reducer;
 
 public class VisvalingamWhyattReducerTest extends AbstractReducerTest {
 
-	@Override
-	public Reducer getReducer() {
-		return new VisvalingamWhyattReducer();
-	}
+    @Override
+    public Reducer getReducer() {
+        return new VisvalingamWhyattReducer();
+    }
 }

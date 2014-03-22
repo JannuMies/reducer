@@ -16,79 +16,72 @@ import org.junit.Test;
 
 public abstract class AbstractReducerTest {
 
-	private Reducer reducer;
+    private Reducer reducer;
 
-	@Before
-	public void setup() {
-		reducer = getReducer();
-	}
+    @Before
+    public void setup() {
+        reducer = getReducer();
+    }
 
-	public abstract Reducer getReducer();
-	
-	@Test
-	public void ensureReducingReturnsNonNullValue() throws Exception {
-		List<Point> reducedList = reducer.reduceBelowThreshold(
-				new ArrayList<Point>(), 666);
+    public abstract Reducer getReducer();
 
-		assertNotNull(reducedList);
-	}
+    @Test
+    public void ensureReducingReturnsNonNullValue() throws Exception {
+        List<Point> reducedList = reducer.reduceBelowThreshold(new ArrayList<Point>(), 666);
 
-	@Test
-	public void ensureSmallestTriangleIsRemoved() throws Exception {
-		ArrayList<Point> pointList = new ArrayList<Point>();
-		pointList.add(new TestPoint(1, 0));
-		pointList.add(new TestPoint(2, 2));
-		pointList.add(new TestPoint(3, 0));
-		pointList.add(new EliminatedTestPoint(4, 1));
-		pointList.add(new TestPoint(5, 0));
+        assertNotNull(reducedList);
+    }
 
-		List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
+    @Test
+    public void ensureSmallestTriangleIsRemoved() throws Exception {
+        ArrayList<Point> pointList = new ArrayList<Point>();
+        pointList.add(new TestPoint(1, 0));
+        pointList.add(new TestPoint(2, 2));
+        pointList.add(new TestPoint(3, 0));
+        pointList.add(new EliminatedTestPoint(4, 1));
+        pointList.add(new TestPoint(5, 0));
 
-		Assert.assertTrue(reducedList
-				.containsAll(clearListOfEliminatedPoints(pointList)));
-	}
+        List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
 
-	@Test
-	public void ensureSmallestNeighbouringTrianglesAreRemoved()
-			throws Exception {
-		ArrayList<Point> pointList = new ArrayList<Point>();
-		pointList.add(new TestPoint(0, 0));
-		pointList.add(new TestPoint(2, 2));
-		pointList.add(new EliminatedTestPoint(3, 1.5));
-		pointList.add(new EliminatedTestPoint(4, 1.2));
-		pointList.add(new TestPoint(5, 2));
-		pointList.add(new TestPoint(10, 0));
+        Assert.assertTrue(reducedList.containsAll(clearListOfEliminatedPoints(pointList)));
+    }
 
-		List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
+    @Test
+    public void ensureSmallestNeighbouringTrianglesAreRemoved() throws Exception {
+        ArrayList<Point> pointList = new ArrayList<Point>();
+        pointList.add(new TestPoint(0, 0));
+        pointList.add(new TestPoint(2, 2));
+        pointList.add(new EliminatedTestPoint(3, 1.5));
+        pointList.add(new EliminatedTestPoint(4, 1.2));
+        pointList.add(new TestPoint(5, 2));
+        pointList.add(new TestPoint(10, 0));
 
-		Assert.assertTrue(reducedList
-				.containsAll(clearListOfEliminatedPoints(pointList)));
-	}
+        List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
 
-	@Test
-	public void ensureRemovingSmallesNonNeighbouringTrianglesAreRemoved()
-			throws Exception {
-		ArrayList<Point> pointList = new ArrayList<Point>();
-		pointList.add(new TestPoint(1, 0));
-		pointList.add(new EliminatedTestPoint(2, 1.2));
-		pointList.add(new TestPoint(3, 2));
-		pointList.add(new EliminatedTestPoint(4, 0.8));
-		pointList.add(new TestPoint(5, 0));
+        Assert.assertTrue(reducedList.containsAll(clearListOfEliminatedPoints(pointList)));
+    }
 
-		List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
+    @Test
+    public void ensureRemovingSmallesNonNeighbouringTrianglesAreRemoved() throws Exception {
+        ArrayList<Point> pointList = new ArrayList<Point>();
+        pointList.add(new TestPoint(1, 0));
+        pointList.add(new EliminatedTestPoint(2, 1.2));
+        pointList.add(new TestPoint(3, 2));
+        pointList.add(new EliminatedTestPoint(4, 0.8));
+        pointList.add(new TestPoint(5, 0));
 
-		Assert.assertTrue(reducedList
-				.containsAll(clearListOfEliminatedPoints(pointList)));
-	}
+        List<Point> reducedList = reducer.reduceBelowThreshold(pointList, 4);
 
-	private Collection<Point> clearListOfEliminatedPoints(
-			ArrayList<Point> pointList) {
-		ArrayList<Point> list = new ArrayList<Point>();
-		for (Point point : pointList) {
-			if (!(point instanceof EliminatedTestPoint)) {
-				list.add(point);
-			}
-		}
-		return list;
-	}
+        Assert.assertTrue(reducedList.containsAll(clearListOfEliminatedPoints(pointList)));
+    }
+
+    private Collection<Point> clearListOfEliminatedPoints(ArrayList<Point> pointList) {
+        ArrayList<Point> list = new ArrayList<Point>();
+        for (Point point : pointList) {
+            if (!(point instanceof EliminatedTestPoint)) {
+                list.add(point);
+            }
+        }
+        return list;
+    }
 }
